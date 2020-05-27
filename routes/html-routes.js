@@ -1,19 +1,21 @@
 var db = require("../models");
+var axios = require("axios");
+var cheerio = require("cheerio")
 
 module.exports = function(app) {
 
     app.get("/scraping", function(req, res) {
-        axios.get("https://news.google.com/topstories?hl=en-US&gl=US&ceid=US:en").then(function(res) {
-            var $ = cheerio.load(res.data);
+        axios.get("https://news.google.com/topstories?hl=en-US&gl=US&ceid=US:en").then(function(response) {
+            var $ = cheerio.load(response.data);
 
-            $("article").each(function(i, element) {
+            $("article h3").each(function(i, element) {
                 var result = {};
-                result.title = $(this).children("h3 a").text();
-                result.url = $(this).children("h3 a").attr("herf");
-                result.summary = $(this).children("div span").text();
-                result.video = $(this).children("div div a").attr("href");
+                result.title = $(this).children("a").text();
+                result.url = $(this).children("a").attr("href");
+                result.summary = $(this).parent("article").children("div").children("span").text();
+                result.video = $(this).parent("article").children("div").children("div").children("a").attr("href");
 
-                db.Article.create(scrapedObj).then(function(dbArticle) {
+                db.Article.create(result).then(function(dbArticle) {
                     console.log(dbArticle);
                 }).catch(function(err) {
                     console.log(err);
