@@ -53,4 +53,15 @@ module.exports = function(app) {
         });
     });
 
+    app.delete("/articles/:id", function(req, res) {
+        db.Note.findOneAndRemove(req.body).then(function(dbNote) {
+            return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id });
+        }).then(function(dbArticle) {
+            res.json(dbArticle);
+        }).catch(function(err) {
+            res.json(err);
+        });
+    });
+
+
 };

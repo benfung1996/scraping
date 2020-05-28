@@ -24,6 +24,8 @@ $(document).on("click", "p", function() {
         $("#notes").append("<input id='titleInput' name='title' >");
         $("#notes").append("<textarea id='bodyInput' name='body'></textarea> ");
         $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+        $("#notes").append("<button data-id='" + data._id + "' id='deletenote'>Delete Note</button>");
+
 
         if (data.note) {
             $("#titleInput").val(data.note.title);
@@ -51,4 +53,22 @@ $(document).on("click", "#savenote", function() {
 
     $("#titleInput").val("");
     $("#bodyInput").val("");
+});
+
+
+$(document).on("click", "#deletenote", function() {
+    var thisId = $(this).attr("data-id");
+
+    $.ajax({
+        method: "DELETE",
+        url: "/articles/" + thisId,
+    })
+    .then(function(data) {
+        console.log(data);
+        console.log("Note deleted");
+    })
+
+    $("#titleInput").val("");
+    $("#bodyInput").val("");
+
 });
