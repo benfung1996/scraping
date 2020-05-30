@@ -74,12 +74,10 @@ $(document).ready(function() {
 
     function deleteArticle() {
         var articleToDelete = $(this).parents(".panel").data();
-
         $.ajax({
             method: "DELETE",
-            url: "/api/articles/" + articleToDelete._id,
-        })
-        .then(function(data) {
+            url: "/api/articles/" + articleToDelete._id
+        }).then(function(data) {
             if (data.ok) {
                 initPage();
             }
@@ -88,7 +86,7 @@ $(document).ready(function() {
 
     function notesArticle() {
         var currentArticle = $(this).parents(".panel").data();
-        $.get("/api/notes/" + currentArticle._id).then(function(data) {
+        $.get("/api/notes/" + currentArticle._id).thention(function(data) {
             var modalText = [
                 "<div class='container-fluid text-center'>",
                 "<h4>Notes For Article: ",
@@ -98,8 +96,8 @@ $(document).ready(function() {
                 "<ul class='list-group note-container'>",
                 "</ul>",
                 "<textarea placeholder='New Note' rows='4' cols='60'></textarea>",
-                "<button class='btn btn-success save'>Save Note</button>",
-                "</div>",
+                "<button calss='btn btn-succes save'>Save Note</button>",
+                "</div>"
             ].join("");
             bootbox.dialog({
                 message: modalText,
@@ -109,33 +107,60 @@ $(document).ready(function() {
                 _id: currentArticle._id,
                 notes: data || []
             };
+
             $(".btn.save").data("article", noteData);
             renderNotesList(noteData);
-        })
+        });
     }
 
-
-    function saveArticle() {
-        var articleToSave = $(this).parents(".panel").data();
-        articleToSave = true;
-
-        $.ajax({
-            method: "PATCH",
-            url: "/api/articles",
-            data: articleToSave
-        })
-        .then(function(data) {
-            if (data.ok) {
-                initPage();
+    function renderNotesList(data) {
+        var noteToRender = [];
+        var currentNote;
+        if (!data.notes.length) {
+            currentNote = [
+                "<li class='list-group-item'>",
+                "No notes yet.",
+                "</li>"
+            ].join("");
+            noteToRender.push(currentNote)
+        }
+        else {
+            for (var i = 0; i < data.notes.length; i++) {
+                currentNote = $([
+                    "<li class='list-group-item note'>",
+                    data.notes[i].body,
+                    "<button class='btn btn-danger note-delete'>x</button>",
+                    "</li>"
+                ].join(""));
+                currentNote.children("button").data("_id", data.notes[i]._id);
+                noteToRender.push(currentNote);
             }
-        });
+        }
+        $(".note-container").append(noteToRender);
     }
 
-    function scrapeArticle() {
-        $.get("/api/fetch")
-        .then(function(data) {
-            initPage();
-            bootbox.alert("<h3 class='text-center m-top-80'>" + data.message + "<h3>");
+    function saveNote() {
+        var noteData;
+        var newNote = $(".bootbox-body textarea").val().trim();
+        if (newNote) {
+            noteData = {
+                _id: $(this).data("article")._id,
+                body: newNote
+            };
+            $.post("/api/notes", noteData).then(function() {
+                bootbox.hideAll();
+            });
+        }
+    }
+
+    function deleteNote() {
+        var noteToDelete = $(this).data("_id");
+        $.ajax({
+            url: "/api/notes/" +noteToDelete,
+            method: "DELETE"
+        }).then(function() {
+            bootbox/hideAll();
         });
     }
+    
 });

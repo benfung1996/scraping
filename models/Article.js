@@ -20,9 +20,10 @@ var ArticleSchema = new Schema({
         type: String,
         requried: true
     },
-    note: {
-        type: Schema.Types.ObjectId,
-        ref: "Note"
+    date: String,
+    saved: {
+        type: Boolean,
+        default: false
     }
 });
 
