@@ -3,9 +3,9 @@ $.getJSON("/articles", function(data) {
         $("#articles").append(
             "<p data-id='" + data[i]._id + "'>"
             + data[i].title + "<br>" 
-            + data[i].url + "<br>" 
+            + data[i].link + "<br>" 
             + data[i].summary + "<br>" 
-            + data[i].video + "</p>"
+            + data[i].image + "</p>"
         );
     }
 });

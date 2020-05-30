@@ -5,15 +5,15 @@ var cheerio = require("cheerio")
 module.exports = function (app) {
 
     app.get("/scraping", function (req, res) {
-        axios.get("https://news.google.com/topstories?hl=en-US&gl=US&ceid=US:en").then(function (response) {
+        axios.get("https://www.nytimes.com/section/us").then(function (response) {
             var $ = cheerio.load(response.data);
 
-            $("article h3").each(function (i, element) {
+            $("article div").each(function (i, element) {
                 var result = {};
-                result.title = $(this).children("a").text();
-                result.url = $(this).children("a").attr("href");
-                result.summary = $(this).parent("article").children("div").children("span").text();
-                result.video = $(this).parent("article").children("div").children("div").children("a").attr("href");
+                result.title = $(this).children("h2").children("a").text();
+                result.link = $(this).children("h2").children("a").attr("href");
+                result.summary = $(this).children("p").text();
+                result.image = $(this).parent("figure").children("a").attr("src")
 
                 db.Article.create(result).then(function (dbArticle) {
                     console.log(dbArticle);
