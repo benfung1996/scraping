@@ -8,7 +8,7 @@ var ArticleSchema = new Schema({
         required: true,
         unique: true
     },
-    url: {
+    link: {
         type: String,
         required: true
     },
@@ -16,7 +16,7 @@ var ArticleSchema = new Schema({
         type: String,
         requried: true
     },
-    video: {
+    image: {
         type: String,
         requried: true
     },

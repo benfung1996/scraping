@@ -7,7 +7,7 @@ var PORT = process.env.PORT || 8080;
 var app = express();
 
 var router = express.Router();
-require("./config/html-routes")(router);
+require("./config/routes")(router);
 app.use(router)
 
 app.use(express.urlencoded({ extended: true }));
