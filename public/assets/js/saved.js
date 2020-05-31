@@ -156,7 +156,7 @@ $(document).ready(function() {
     function deleteNote() {
         var noteToDelete = $(this).data("_id");
         $.ajax({
-            url: "/api/notes/" +noteToDelete,
+            url: "/api/notes/" + noteToDelete,
             method: "DELETE"
         }).then(function() {
             bootbox/hideAll();

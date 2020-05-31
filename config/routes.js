@@ -14,7 +14,7 @@ module.exports = function (router) {
     
     router.get("/api/fetch", function(req, res) {
         articlesController.fetch(function(err, docs) {
-            if (!doc || docs.insertedCount === 0) {
+            if (!docs || docs.insertedCount === 0) {
                 res.json({
                     message: "No new articles."
                 });
@@ -63,7 +63,7 @@ module.exports = function (router) {
     });
 
     router.delete("/api/notes/:id", function(req, res) {
-        var query = [];
+        var query = {};
         query._id = req.params.id;
         notesController.delete(query, function(err, data) {
             res.json(data);

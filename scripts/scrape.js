@@ -6,25 +6,21 @@ var scrape = function (cb) {
     axios.get("https://www.nytimes.com/section/us").then(function (response) {
         var $ = cheerio.load(response.data);
         
-        var result = {};
+        var result = [];
 
         $("article div").each(function (i, element) {
             var title = $(this).children("h2").children("a").text();
             var link = $(this).children("h2").children("a").attr("href");
             var summary = $(this).children("p").text();
-            var image = $(this).parent("figure").children("a").attr("src")
+            var image = $(this).parent("article").children("figure").children("a").attr("src")
 
-            if(title && link && summary && image) {
-                var titleNeat = title.replace(/(\r\n||n|\r|\t|\s+)/gm, " ").trim();
-                var linkNeat = link.replace(/(\r\n||n|\r|\t|\s+)/gm, " ").trim();
-                var summaryNeat = summary.replace(/(\r\n||n|\r|\t|\s+)/gm, " ").trim();
-                var imageNeat = image.replace(/(\r\n||n|\r|\t|\s+)/gm, " ").trim();
-
+            if(title) {
+                
                 var dataToAdd = {
-                    title: titleNeat,
-                    link: linkNeat,
-                    summary: summaryNeat,
-                    image: imageNeat
+                    title: title,
+                    link: link,
+                    summary: summary,
+                    image: image
                 };
 
                 result.push(dataToAdd);

@@ -47,7 +47,6 @@ $(document).ready(function() {
             "</div>"
         ].join(""));
         panel.data("_id", article._id);
-
         return panel;
     }
 
@@ -62,7 +61,7 @@ $(document).ready(function() {
             "<h3>What would you like to do?</h3>",
             "</div>",
             "<div class='panel-body text-center'>",
-            "<h4><a class='scrapre-new'>Scrape New Articles</a></h4>",
+            "<h4><button class='scrape-new'>Scrape New Articles</button></h4>",
             "<h3><a href='/saved'>Go to Saved Articles</a></h4>",
             "</div>",
             "</div>"
@@ -72,7 +71,7 @@ $(document).ready(function() {
 
     function saveArticle() {
         var articleToSave = $(this).parents(".panel").data();
-        articleToSave = true;
+        articleToSave.saved = true;
 
         $.ajax({
             method: "PATCH",
