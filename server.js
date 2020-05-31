@@ -20,9 +20,11 @@ app.set("view engine", "handlebars");
 
 require("./routes/html-routes")(app);
 
+mongoose.Promise = global.Promise;
+
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://test:password1@ds045637.mlab.com:45637/heroku_d63fqf64";
 
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, {useMongoClient: true});
 
 app.listen(PORT, function() {
     console.log("App is running on port " + PORT + "!");
