@@ -20,7 +20,7 @@ app.set("view engine", "handlebars");
 
 require("./routes/html-routes")(app);
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://<dbuser>:<dbpassword>@ds045637.mlab.com:45637/heroku_d63fqf64";
 
 mongoose.connect(MONGODB_URI);
 
